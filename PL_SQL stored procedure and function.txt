@@ -1,19 +1,32 @@
-create database Score;
+ create database Score;
 use Score;
-create table stud_marks(name varchar(20),total_marks int(5));
-create table Result(roll_no int(3) primary key,name varchar(20),class varchar(20));
+CREATE TABLE stud_marks (
+    name VARCHAR(20),
+    total_marks INT(5)
+);
+CREATE TABLE Result (
+    roll_no INT(3) PRIMARY KEY,
+    name VARCHAR(20),
+    class VARCHAR(20)
+);+
 insert into stud_marks values('Suresh',995);
 insert into stud_marks values('Harish',865);
 insert into stud_marks values('Samart',920);
 insert into stud_marks values('Mohan',1000);
 insert into stud_marks values('Soham',745);
-select * from stud_marks;
+SELECT 
+    *
+FROM
+    stud_marks;
 insert into Result(roll_no,Name) values(1,'Suresh');
 insert into Result(roll_no,Name) values(2,'Harish');
 insert into Result(roll_no,Name) values(3,'Samart');
 insert into Result(roll_no,Name) values(4,'Mohan');
 insert into Result(roll_no,Name) values(5,'Soham');
-select * from Result;
+SELECT 
+    *
+FROM
+    Result;
 delimiter //
 create procedure proc_Grade(in r int(2),out grade char(25))
 begin
@@ -42,9 +55,12 @@ declare grade varchar(25);
 call proc_Grade(r,grade);
 return grade;
 end //
-select func_Grade(1); //
-select func_Grade(2); //
-select func_Grade(3); //
-select func_Grade(4); //
-select func_Grade(5); //
-select * from Result; //
+SELECT FUNC_GRADE(1)//
+SELECT FUNC_GRADE(2)//
+SELECT FUNC_GRADE(3)//
+SELECT FUNC_GRADE(4)//
+SELECT FUNC_GRADE(5)//
+SELECT 
+    *
+FROM
+    Result//
