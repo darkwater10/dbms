@@ -1,0 +1,71 @@
+CREATE DATABASE library;
+
+USE library;
+
+CREATE TABLE Borrower (
+    Rollno INT,
+    Name VARCHAR(20),
+    DateofIssue DATE,
+    NameofBook VARCHAR(30),
+    Status VARCHAR(10)
+);
+
+INSERT INTO Borrower VALUES (14, 'Ram', '2022-09-19', 'Operating System', 'I');
+INSERT INTO Borrower VALUES (27, 'Soham', '2022-07-24', 'Object Oriented Programming', 'I');
+INSERT INTO Borrower VALUES (34, 'Mohan', '2022-06-12', 'Microprocessor', 'I');
+INSERT INTO Borrower VALUES (48, 'Om', '2022-04-19', 'Mechanics', 'I');
+
+SELECT * FROM Borrower;
+
+CREATE TABLE Fine (
+    Rollno INT,
+    Date DATE,
+    Amount INT
+);
+
+DELIMITER //
+
+CREATE PROCEDURE calc_Fine(IN r INT, IN b VARCHAR(30))
+BEGIN
+    DECLARE doi DATE;
+    DECLARE diff INT;
+
+    SELECT DateofIssue INTO doi FROM Borrower WHERE Rollno = r AND NameofBook = b;
+
+    IF doi IS NOT NULL THEN
+        SET diff = DATEDIFF(CURDATE(), doi);
+        
+        IF diff > 0 THEN
+            IF diff >= 15 AND diff <= 30 THEN
+                INSERT INTO Fine VALUES (r, CURDATE(), diff * 5);
+            ELSEIF diff > 30 THEN
+                INSERT INTO Fine VALUES (r, CURDATE(), diff * 50);
+            END IF;
+        END IF;
+    END IF;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE submit(IN r INT)
+BEGIN
+    UPDATE Borrower SET Status = 'R' WHERE Rollno = r;
+    DELETE FROM Fine WHERE Rollno = r;
+END //
+DELIMITER ;
+
+CALL calc_Fine(14, 'Operating System'); 
+CALL calc_Fine(27, 'Object Oriented Programming'); 
+CALL calc_Fine(34, 'Microprocessor'); 
+CALL calc_Fine(48, 'Mechanics'); 
+
+SELECT * FROM Fine; 
+
+CALL submit(14); 
+CALL submit(27); 
+CALL submit(48); 
+CALL submit(34); 
+
+SELECT * FROM Fine; 
+SELECT * FROM Borrower; 
