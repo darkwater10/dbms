@@ -1,0 +1,22 @@
+DROP DATABASE BRANCH;
+CREATE DATABASE BRANCH;
+USE BRANCH;
+CREATE TABLE NEW_BRANCHES (
+branch_id INT,
+branch_name VARCHAR(50)
+);
+
+CREATE TABLE BRANCH_MSTR (
+branch_id INT,
+branch_name VARCHAR(50)
+);
+INSERT INTO NEW_BRANCHES (branch_id, branch_name) VALUES (101, 'Mumbai');
+INSERT INTO NEW_BRANCHES (branch_id, branch_name) VALUES (102, 'Delhi');
+INSERT INTO NEW_BRANCHES (branch_id, branch_name) VALUES (103, 'Bangalore');
+INSERT INTO BRANCH_MSTR (branch_id, branch_name) VALUES (101, 'Mumbai');
+INSERT INTO BRANCH_MSTR (branch_id, branch_name) VALUES (104, 'Chennai');
+ALTER TABLE BRANCH_MSTR ADD CONSTRAINT UNIQUE (branch_id);
+INSERT IGNORE INTO BRANCH_MSTR (branch_id, branch_name)
+SELECT branch_id, branch_name
+FROM NEW_BRANCHES;
+SELECT * FROM BRANCH_MSTR;
