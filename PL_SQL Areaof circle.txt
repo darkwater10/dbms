@@ -1,19 +1,22 @@
-create table circle(Radius number,Area number)
+DROP DATABASE AREA;
+CREATE DATABASE AREA;
+USE AREA;
+CREATE TABLE areas (
+radius INT,
+area DECIMAL(10, 2)
+);
+DELIMITER //
+CREATE PROCEDURE CalculateCircleAreas()
+BEGIN
+    DECLARE r INT := 5;
+    DECLARE calculated_area DECIMAL(10, 2);
 
-Declare 
-  rad number; 
-  area number; 
-Begin 
-	for rad in 5..9 loop 
-	area := 3.14*POWER(rad,2); 
-    insert into circle(Radius,Area) 
-	Values(rad,area); 
- 
-END LOOP; 
-COMMIT; 
-	Dbms_Output.Put_Line('RADIUS | AREA'); 
-	Dbms_Output.Put_Line('_____________'); 
-	for shu in (select Radius,Area from circle) LOOP 
-		Dbms_output.put_line(shu.Radius || '   |   ' || shu.Area); 
-	END loop; 
-END; 
+    WHILE r <= 9 DO
+        SET calculated_area = 3.14159 * r * r;
+        INSERT INTO areas (radius, area) VALUES (r, calculated_area);
+        SET r = r + 1;
+    END WHILE;
+END //
+DELIMITER ;
+CALL CalculateCircleAreas();
+SELECT * FROM areas;
